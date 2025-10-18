@@ -26,6 +26,8 @@ CLifespan::CLifespan(int totalLifespan)
 CBoundingBox::CBoundingBox(const Vec2f& s) :
 	size(s), halfSize(s.x / 2, s.y / 2) {}
 
+CBoundingCircle::CBoundingCircle(float r) : radius(r) {}
+
 CAnimation::CAnimation(const Animation& anim, bool r) :
 	animation(anim), repeat(r) {}
 

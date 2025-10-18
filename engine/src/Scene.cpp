@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Scene.hpp"
 
 #include <memory>

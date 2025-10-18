@@ -10,6 +10,7 @@ class EntityManager;
 using ComponentTuple = std::tuple<
 	CAnimation,
 	CBoundingBox,
+	CBoundingCircle,
 	CGravity,
 	CInput,
 	CLifespan,
