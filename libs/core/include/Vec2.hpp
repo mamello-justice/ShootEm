@@ -46,6 +46,13 @@ public:
 	operator sf::Vector2<T>() { return sf::Vector2<T>(x, y); }
 
 	/**
+	 * @brief Conversion operator to sf::Vector2
+	 *
+	 * @return sf::Vector2<T> Converted SFML vector
+	 */
+	operator sf::Vector2<T>() const { return sf::Vector2<T>(x, y); }
+
+	/**
 	 * @brief Addition operator
 	 *
 	 * @param rhs Right-hand side vector
