@@ -23,25 +23,45 @@
                         <Directory Id="AppFontsFolder" Name="fonts">
                             <Component Id="OrbitronFont"
                                 Guid="{1A2B3C4D-5E6F-7890-ABCD-EF1234567890}">
-                                <File Id="OrbitronFontFile" Source="assets/fonts/orbitron.ttf"
+                                <File
+                                    Id="OrbitronFontFile"
+                                    Source="assets/fonts/orbitron.ttf"
                                     KeyPath="yes" />
                             </Component>
                             <Component Id="TechFont"
                                 Guid="{2B3C4D5E-6F78-90AB-CDEF-1234567890AB}">
-                                <File Id="TechFontFile" Source="assets/fonts/tech.ttf"
+                                <File
+                                    Id="TechFontFile"
+                                    Source="assets/fonts/tech.ttf"
                                     KeyPath="yes" />
                             </Component>
                         </Directory>
                     </Directory>
                     <Component Id="DefaultConfig"
                         Guid="{3C4D5E6F-7890-ABCD-EF12-34567890ABCD}">
-                        <File Id="DefaultConfigFile" Source="config.ini"
+                        <File
+                            Id="DefaultConfigFile"
+                            Source="config.ini"
                             KeyPath="yes" />
                     </Component>
                     <Component Id="MainExecutable"
                         Guid="{4D5E6F78-90AB-CDEF-1234-567890ABCDEF}">
-                        <File Id="ShootEmExe" Source="!(bindpath.)\ShootEm.exe"
+                        <File
+                            Id="ShootEmExe"
+                            Source="!(bindpath.)\ShootEm.exe"
                             KeyPath="yes" />
+                        <Shortcut
+                            Name="ShootEm"
+                            Directory="ProgramMenuFolder"
+                            WorkingDirectory="INSTALLFOLDER"
+                            Advertise="yes"
+                            Icon="ShootEmIcon.exe" />
+                        <Shortcut
+                            Name="ShootEm"
+                            Directory="DesktopFolder"
+                            WorkingDirectory="INSTALLFOLDER"
+                            Advertise="yes"
+                            Icon="ShootEmIcon.exe" />
                     </Component>
                 </Directory>
             </Directory>
@@ -73,5 +93,9 @@
                 </Component>
             </Directory>
         </StandardDirectory>
+
+        <Icon
+            Id="ShootEmIcon.exe"
+            SourceFile="!(bindpath.)\ShootEm.exe" />
     </Package>
 </Wix>
