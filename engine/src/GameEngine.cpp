@@ -14,7 +14,7 @@ GameEngine::GameEngine() {
 }
 
 void GameEngine::init() {
-	m_window.create(sf::VideoMode({ 1920, 1080 }), "Game Engine");
+	m_window.create(sf::VideoMode({ 1920, 1080 }), "Game Engine", sf::State::Fullscreen);
 	m_window.setFramerateLimit(60);
 
 	if (!ImGui::SFML::Init(m_window))
