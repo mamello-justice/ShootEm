@@ -68,6 +68,10 @@ void Scene_Play::onEnd() {
 	m_gameEngine->changeScene("Scene_Menu", std::make_shared<Scene_Menu>(m_gameEngine));
 }
 
+void Scene_Play::sClickHandler(const Vec2f& mPos, const sf::Mouse::Button& button) {
+	spawnBullet(m_player, mPos);
+}
+
 void Scene_Play::sCollision() {
 	if (m_paused) { return; }
 
