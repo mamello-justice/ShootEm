@@ -78,6 +78,10 @@ void Scene_Menu::onEnd() {
 	m_gameEngine->quit();
 }
 
+void Scene_Menu::sClickHandler(const Vec2f& mPos, const sf::Mouse::Button& button) {
+	m_clickListener.onClick(mPos, button);
+}
+
 void Scene_Menu::sDoAction(const Action& action) {
 	if (action.type() == "START")
 	{

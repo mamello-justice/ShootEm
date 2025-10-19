@@ -21,7 +21,3 @@ void Scene::registerAction(const sf::Keyboard::Scan& scancode, const std::string
 const std::map<sf::Keyboard::Scan, std::string>& Scene::getActionMap() const {
 	return m_actionMap;
 }
-
-void Scene::sClickHandler(const Vec2f& mPos, const sf::Mouse::Button& button) {
-	m_clickListener.onClick(mPos, button);
-}
