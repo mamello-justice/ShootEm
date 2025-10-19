@@ -2,12 +2,14 @@
 
 #include <string>
 
-struct WindowConfig {
+struct WindowConfig
+{
     size_t Width, Height;
     bool FullScreen;
 };
 
-struct PlayerConfig {
+struct PlayerConfig
+{
     float ShapeRadius,
         CollisionRadius,
         Speed,
@@ -17,7 +19,8 @@ struct PlayerConfig {
         Vertices;
 };
 
-struct EnemyConfig {
+struct EnemyConfig
+{
     float ShapeRadius,
         CollisionRadius,
         SpeedMin, SpeedMax,
@@ -28,7 +31,8 @@ struct EnemyConfig {
         SpawnInterval;
 };
 
-struct BulletConfig {
+struct BulletConfig
+{
     float ShapeRadius,
         CollisionRadius,
         Speed,
@@ -39,7 +43,8 @@ struct BulletConfig {
         Lifespan;
 };
 
-class GameConfig {
+class GameConfig
+{
     GameConfig() = default;
 
 public:
@@ -48,7 +53,9 @@ public:
     EnemyConfig Enemy;
     BulletConfig Bullet;
 
-    static GameConfig& getInstance();
+    static GameConfig &getInstance();
 
-    void loadFromFile(const std::string& path);
+    void loadFromFile(const std::string &path);
 };
+
+std::string getConfigPath();

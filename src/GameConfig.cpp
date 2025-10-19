@@ -74,3 +74,37 @@ void GameConfig::loadFromFile(const std::string& filename) {
     // Load Assets
     Assets::Instance().loadFromFile(filename);
 }
+
+#if defined(_DEBUG)
+std::string getConfigPath() {
+    return "config.ini";
+}
+#elif defined(_WIN32)
+#include <ShlObj.h>
+#include <Windows.h>
+std::string getConfigPath() {
+    PWSTR documentsPath = nullptr;
+    std::string configPath;
+
+    if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_Documents, 0, nullptr, &documentsPath))) {
+        std::wstring wpath = std::wstring(documentsPath) + L"\\ShootEm\\config.ini";
+
+        // Convert wide string to regular string using Windows API
+        int size_needed = WideCharToMultiByte(CP_UTF8, 0, wpath.c_str(), (int)wpath.size(), nullptr, 0, nullptr, nullptr);
+        configPath.resize(size_needed);
+        WideCharToMultiByte(CP_UTF8, 0, wpath.c_str(), (int)wpath.size(), &configPath[0], size_needed, nullptr, nullptr);
+
+        CoTaskMemFree(documentsPath);
+    }
+    else {
+        // Fallback to local directory if we can't get Documents folder
+        configPath = "config.ini";
+    }
+
+    return configPath;
+}
+#else
+std::string getConfigPath() {
+    return "config.ini";
+}
+#endif
