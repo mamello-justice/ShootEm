@@ -1,0 +1,42 @@
+name: Build & Deploy
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  build-windows:
+    name: Build Windows
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup CMake
+      uses: lukka/get-cmake@latest
+      with:
+        cmakeVersion: '3.28'
+
+    - name: Setup Just
+      uses: extractions/setup-just@v3
+      with:
+        github-token: ${{ secrets.MY_GITHUB_TOKEN }}
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.1
+
+    - name: Setup Build
+      run: just setup
+
+    - name: Build
+      run: just build-release
+
+    - name: Package
+      run: dotnet build -c Release
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ShootEmSetup
+        path: bin/Release
