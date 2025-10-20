@@ -11,7 +11,8 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/checkout@v4
 
     - name: Setup CMake
       uses: lukka/get-cmake@latest
@@ -33,10 +34,47 @@ jobs:
       run: just build-release
 
     - name: Package
-      run: dotnet build -c Release
+      run: just package
+
+    - name: Zip Installer
+      run: just zip
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: ShootEmSetup
-        path: bin/Release
+        name: WindowsSetup
+        path: ShootEm.zip
+
+  release:
+    name: Release
+    needs: [build-windows]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      # id-token: write # to enable use of OIDC for trusted publishing and npm provenance
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: WindowsSetup
+
+      - name: Install
+        run: npm install
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release

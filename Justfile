@@ -18,8 +18,11 @@ build:
 build-release:
     cmake --build {{BUILD_DIR}} --config Release
 
-package: build-release
+package:
     dotnet build -c Release
+
+zip:
+    7z a {{PROGRAM}}.zip ./bin/Release/*
 
 [working-directory: 'bin']
 run: build
