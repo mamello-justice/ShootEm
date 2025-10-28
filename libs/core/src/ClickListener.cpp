@@ -12,8 +12,6 @@ namespace Listener
         const std::shared_ptr<sf::Shape>& shape,
         const sf::Mouse::Button& button,
         const std::shared_ptr<ClickCallback>& func) {
-        auto pos = shape->getGlobalBounds().position;
-        auto size = shape->getGlobalBounds().size;
         m_listeners[button].push_back(std::pair(shape, func));
     }
 

@@ -16,9 +16,6 @@ void ShootEm::init() {
     GameConfig::getInstance().loadFromFile(getConfigPath());
 
     m_gameEngine->window().setTitle("ShootEm");
-    m_gameEngine->window().setSize(sf::Vector2u(
-        GameConfig::getInstance().Window.Width,
-        GameConfig::getInstance().Window.Height));
 }
 
 void ShootEm::run() {

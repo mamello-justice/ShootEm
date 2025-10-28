@@ -12,6 +12,10 @@ namespace Layout
     class Flex : public sf::Shape
     {
         Vec2f m_size;
+        float m_padTop = 0.f,
+              m_padRight = 0.f,
+              m_padBottom = 0.f,
+              m_padLeft = 0.f;
         std::vector<std::shared_ptr<sf::Shape>> m_children;
         std::shared_ptr<sf::RectangleShape> m_bg;
         sf::Color m_bgColor;
@@ -40,6 +44,14 @@ namespace Layout
         Vec2f getSize() const;
 
         void setSize(Vec2f size);
+
+        void setPadding(float pad);
+
+        void setPadding(float padY, float padX);
+
+        void setPadding(float padTop, float padRight, float padBottom, float padLeft);
+
+        void setPosition_(Vec2f pos);
 
         std::size_t getPointCount() const;
 

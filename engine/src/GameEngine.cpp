@@ -14,13 +14,15 @@ GameEngine::GameEngine() {
 }
 
 void GameEngine::init() {
-	m_window.create(sf::VideoMode({ 1920, 1080 }), "Game Engine", sf::State::Fullscreen);
+	m_window.create(sf::VideoMode::getDesktopMode(), "Game Engine", sf::State::Fullscreen);
 	m_window.setFramerateLimit(60);
 
+#ifdef _DEBUG
 	if (!ImGui::SFML::Init(m_window))
 	{
 		std::cerr << "Failed to initialize ImGui" << std::endl;
 	}
+#endif
 }
 
 void GameEngine::run() {
@@ -31,7 +33,9 @@ void GameEngine::run() {
 }
 
 void GameEngine::update() {
+#ifdef _DEBUG
 	ImGui::SFML::Update(m_window, m_deltaClock.restart());
+#endif
 
 	if (!m_running)
 	{
@@ -47,7 +51,9 @@ void GameEngine::update() {
 
 	m_window.clear();
 	currentScene()->update();
+#ifdef _DEBUG
 	ImGui::SFML::Render(m_window);
+#endif
 	m_window.display();
 }
 
@@ -67,7 +73,9 @@ void GameEngine::sUserInput() {
 	while (auto event = m_window.pollEvent())
 	{
 		// pass the event to imgui to be parsed
+#ifdef _DEBUG
 		ImGui::SFML::ProcessEvent(m_window, *event);
+#endif
 
 		if (event->is<sf::Event::Closed>()) { quit(); }
 
@@ -101,6 +109,12 @@ void GameEngine::sUserInput() {
 		if (const auto* mousePressed = event->getIf<sf::Event::MouseButtonPressed>()) {
 			Vec2f mPos(mousePressed->position);
 			currentScene()->sClickHandler(mPos, mousePressed->button);
+		}
+
+
+		if (const auto* mousePressed = event->getIf<sf::Event::MouseMoved>()) {
+			Vec2f mPos(mousePressed->position);
+			currentScene()->sHoverHandler(mPos);
 		}
 	}
 }

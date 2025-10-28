@@ -29,9 +29,11 @@ public:
 
 	const std::map<sf::Keyboard::Scan, std::string> &getActionMap() const;
 
-	virtual void sClickHandler(const Vec2f &mPos, const sf::Mouse::Button &button) = 0;
+	virtual void sClickHandler(const Vec2f &mPos, const sf::Mouse::Button &button) {}
 
-	virtual void sDoAction(const Action &action) = 0;
+	virtual void sHoverHandler(const Vec2f &mPos) {}
+
+	virtual void sDoAction(const Action &action) {}
 
 	virtual void sRender() = 0;
 

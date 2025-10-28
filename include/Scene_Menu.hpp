@@ -16,6 +16,7 @@ class Scene_Menu : public Scene
 	std::vector<std::string> m_menuStrings;
 	size_t m_selectedMenuIndex;
 	Listener::Click m_clickListener;
+	Listener::Hover m_hoverListener;
 
 	std::shared_ptr<sf::Text> m_title;
 	std::shared_ptr<Layout::Flex> m_menuBox;
@@ -27,6 +28,7 @@ protected:
 	void onEnd();
 
 	void sClickHandler(const Vec2f &mPos, const sf::Mouse::Button &button) override;
+	void sHoverHandler(const Vec2f &mPos) override;
 	void sDoAction(const Action &action) override;
 	void sRender() override;
 

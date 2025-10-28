@@ -18,6 +18,8 @@ namespace Components
         sf::Color m_bgColor;
         sf::Color m_olColor;
 
+        void updateBackground();
+
     public:
         Button(
             std::shared_ptr<sf::Text> text);

@@ -27,32 +27,34 @@ namespace Components
         m_bgColor(bgColor),
         m_olColor(olColor) {
 
-        auto textPos = text->getLocalBounds().position;
-        auto textSize = text->getLocalBounds().size;
-        text->setOrigin({
-                textPos.x + textSize.x / 2.0f,
-                textPos.y + textSize.y / 2.0f
-            });
+        auto textPos = text->getGlobalBounds().position;
+        auto textSize = text->getGlobalBounds().size;
+        text->setOrigin(textSize / 2.f);
         m_text->setFillColor(fgColor);
 
         setSize(textSize);
+        setOrigin(textSize / 2.f);
 
         auto bgPos = m_bg->getPosition();
         auto bgSize = m_bg->getSize();
-        m_bg->setOrigin({
-                bgPos.x + bgSize.x / 2.0f,
-                bgPos.y + bgSize.y / 2.0f
-            });
+        m_bg->setOrigin(getOrigin());
         m_bg->setFillColor(bgColor);
         m_bg->setOutlineColor(olColor);
+    }
+
+    void Button::updateBackground() {
+        m_bg->setSize(m_size);
+        m_bg->setOrigin(m_size / 2.f);
+        m_bg->setPosition(getPosition());
     }
 
     void Button::setSize(Vec2f size) {
         m_size = size;
 
-        m_bg->setSize(size);
+        setOrigin(size / 2.f);
 
         update();
+        updateBackground();
     }
 
     void Button::setText(std::string t) {

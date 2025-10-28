@@ -7,6 +7,7 @@ add_library(Core STATIC)
 target_sources(Core
     PUBLIC
     src/ClickListener.cpp
+    src/HoverListener.cpp
     src/Random.cpp
 )
 

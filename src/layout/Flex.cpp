@@ -22,33 +22,17 @@ namespace Layout
     }
 
     void Flex::updateBackground() {
-        m_bg->setSize(m_size);
+        Vec2f size = { m_size.x + m_padLeft + m_padRight, m_size.y + m_padTop + m_padBottom };
+        m_bg->setSize(size);
+        m_bg->setOrigin(size / 2.f);
         m_bg->setPosition(getPosition());
-
-        auto bgPos = m_bg->getPosition();
-        m_bg->setOrigin({
-                bgPos.x + m_size.x / 2.0f,
-                bgPos.y + m_size.y / 2.0f
-            });
-
-        {
-            auto size = m_bg->getSize();
-            auto pos = m_bg->getPosition();
-        }
     }
 
     void Flex::updateChildren() {
-        auto pos = getPosition();
-        std::shared_ptr<sf::Shape> prev = nullptr;
+        float offsetY = -1.f * (getSize().y / 2.f);
         for (auto child : m_children) {
-            size_t offsetY = 0;
-
-            if (prev) {
-                offsetY += prev->getGlobalBounds().size.y + m_gap;
-            }
-
-            child->setPosition({ pos.x, pos.y + offsetY });
-            prev = child;
+            child->setPosition({ getPosition().x, getPosition().y + offsetY });
+            offsetY += child->getGlobalBounds().size.y + m_gap;
         }
     }
 
@@ -80,8 +64,33 @@ namespace Layout
     void Flex::setSize(Vec2f size) {
         m_size = size;
 
+        setOrigin(size / 2.f);
+
         update();
         updateBackground();
+    }
+
+    void Flex::setPadding(float pad) {
+        setPadding(pad, pad, pad, pad);
+    }
+
+    void Flex::setPadding(float padY, float padX) {
+        setPadding(padY, padX, padY, padX);
+    }
+
+    void Flex::setPadding(float padTop, float padRight, float padBottom, float padLeft) {
+        m_padTop = padTop;
+        m_padRight = padRight;
+        m_padBottom = padBottom;
+        m_padLeft = padLeft;
+    }
+
+    void Flex::setPosition_(Vec2f pos) {
+        setPosition(pos);
+
+        update();
+        updateBackground();
+        updateChildren();
     }
 
     void Flex::addChild(std::shared_ptr<sf::Shape> child) {
