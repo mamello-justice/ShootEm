@@ -11,7 +11,7 @@ include(FetchContent)
 
 FetchContent_Declare(TooDeeEngine
     GIT_REPOSITORY https://github.com/mamello-justice/TooDeeEngine.git
-    GIT_TAG 62fc565e20b36498d7312fb0cd322e2f7f8941b9 # Latest
+    GIT_TAG 00f0ee5bd8dbdbe49a93382f5dd8811804275213 # Latest
     GIT_PROGRESS ${GIT_PROGRESS}
 )
 
