@@ -40,9 +40,6 @@ protected:
 	void sClickHandler(const Vec2f &mPos, const sf::Mouse::Button &button) override;
 	void sDoAction(const Action &action) override;
 	void sEnemySpawner();
-#ifdef _DEBUG
-	void sGUI();
-#endif
 	void sLifespan();
 	void sMovement();
 	void sRender() override;

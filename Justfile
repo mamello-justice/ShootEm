@@ -1,29 +1,31 @@
+set dotenv-load := true
+
 PROGRAM := 'ShootEm'
-
 ARCHITECTURE := 'x64'
-
 BUILD_DIR := 'build'
-
 CMAKE_GENERATOR := 'Visual Studio 17 2022'
 
 default:
     just --list
 
 setup:
-    cmake -B {{BUILD_DIR}} -G "{{CMAKE_GENERATOR}}" -A {{ARCHITECTURE}}
+    cmake -B {{ BUILD_DIR }} -G "{{ CMAKE_GENERATOR }}" -A {{ ARCHITECTURE }}
+
+clean:
+    cmake --build {{ BUILD_DIR }} --target clean
 
 build:
-    cmake --build {{BUILD_DIR}} --config Debug
+    cmake --build {{ BUILD_DIR }} --config Debug
 
 build-release:
-    cmake --build {{BUILD_DIR}} --config Release
+    cmake --build {{ BUILD_DIR }} --config Release
 
 package:
     dotnet build -c Release
 
 zip:
-    7z a {{PROGRAM}}.zip ./bin/Release/*
+    7z a {{ PROGRAM }}.zip ./bin/Release/*
 
-[working-directory: 'bin']
+[working-directory('bin')]
 run: build
-    ../build/bin/Debug/{{PROGRAM}}
+    ../build/bin/Debug/{{ PROGRAM }}

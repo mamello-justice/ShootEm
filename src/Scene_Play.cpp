@@ -2,9 +2,6 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "imgui.h"
-#include "imgui-SFML.h"
-
 #include "Action.hpp"
 #include "Assets.hpp"
 #include "Components.hpp"
@@ -51,9 +48,6 @@ void Scene_Play::update() {
 	sMovement();
 	sLifespan();
 	sCollision();
-#ifdef _DEBUG
-	sGUI();
-#endif
 	sRender();
 
 	m_currentFrame++;
@@ -182,50 +176,6 @@ void Scene_Play::sEnemySpawner() {
 	}
 }
 
-#ifdef _DEBUG
-void Scene_Play::sGUI() {
-	ImGui::Begin("Scene Properties");
-
-	if (ImGui::BeginTabBar("MyTabBar")) {
-		if (ImGui::BeginTabItem("Actions")) {
-			for (const auto& [key, name] : getActionMap()) {
-				std::string ss = "START##" + name;
-				std::string se = "END##" + name;
-
-				if (ImGui::Button(ss.c_str())) {
-					sDoAction(Action(name, "START"));
-				}
-				ImGui::SameLine();
-				if (ImGui::Button(ss.c_str())) {
-					sDoAction(Action(name, "END"));
-				}
-				ImGui::SameLine();
-				ImGui::Text("%s", name.c_str());
-			}
-			ImGui::EndTabItem();
-		}
-
-		if (ImGui::BeginTabItem("Assets")) {
-			if (ImGui::CollapsingHeader("Animations", ImGuiTreeNodeFlags_DefaultOpen)) {
-				ImGui::Indent();
-				int count = 0;
-				for (const auto& [name, anim] : Assets::Instance().getAnimations()) {
-					count++;
-					ImGui::ImageButton(name.c_str(), anim.getSprite(), sf::Vector2f(32, 32));
-					if ((count % 6) != 0 && count != Assets::Instance().getAnimations().size()) {}
-				}
-				ImGui::Unindent();
-			}
-			ImGui::EndTabItem();
-		}
-
-		ImGui::EndTabBar();
-	}
-
-	ImGui::End();
-}
-#endif
-
 void Scene_Play::sMovement() {
 	if (m_paused or !m_isMovementActive) { return; }
 
@@ -287,8 +237,8 @@ void Scene_Play::sLifespan() {
 				e->destroy();
 			}
 
-			if (e->has<CShape>()) {
-				auto& cShape = e->get<CShape>();
+			if (e->has<CCircle>()) {
+				auto& cShape = e->get<CCircle>();
 				auto FC = cShape.circle.getFillColor();
 				auto OC = cShape.circle.getOutlineColor();
 				auto alpha = (int)(((float)cLifespan.remaining / cLifespan.lifespan) * 255);
@@ -306,7 +256,7 @@ void Scene_Play::sRender() {
 	m_gameEngine->window().clear();
 
 	for (auto& e : m_entityManager.getEntities()) {
-		auto& cShape = e->get<CShape>();
+		auto& cShape = e->get<CCircle>();
 		auto& cTransform = e->get<CTransform>();
 
 		// set the position of the shape based on the entity's transform->pos
@@ -349,7 +299,7 @@ void Scene_Play::spawnPlayer() {
 	auto mPlayerConfig = GameConfig::getInstance().Player;
 
 	m_player->add<CTransform>(Vec2f((float)w.x / 2, (float)w.y / 2), Vec2f(0.0f, 0.0f), Vec2f(1.f, 1.f), 0.0f);
-	m_player->add<CShape>(
+	m_player->add<CCircle>(
 		mPlayerConfig.ShapeRadius,
 		mPlayerConfig.Vertices,
 		sf::Color(
@@ -387,7 +337,7 @@ void Scene_Play::spawnEnemy() {
 			Random::between(mEnemyConfig.SpeedMin, mEnemyConfig.SpeedMax) * Random::sign()),
 		Vec2f(1.f, 1.f),
 		0.0f);
-	e->add<CShape>(
+	e->add<CCircle>(
 		mEnemyConfig.ShapeRadius,
 		vertices,
 		sf::Color(Random::between(30, 255), Random::between(30, 255), Random::between(30, 255)),
@@ -405,7 +355,7 @@ void Scene_Play::spawnEnemy() {
 void Scene_Play::spawnSmallEnemies(std::shared_ptr<Entity> e) {
 	auto& cTransform = e->get<CTransform>();
 	auto& cScore = e->get<CScore>();
-	auto& eCircle = e->get<CShape>().circle;
+	auto& eCircle = e->get<CCircle>().circle;
 	float SMALL_SPEED = 5;
 	float deltaAngle = (float)360 / eCircle.getPointCount();
 
@@ -423,7 +373,7 @@ void Scene_Play::spawnSmallEnemies(std::shared_ptr<Entity> e) {
 			Vec2f(1.f, 1.f),
 			0.0f
 		);
-		s->add<CShape>(
+		s->add<CCircle>(
 			mEnemyConfig.ShapeRadius / 2,
 			eCircle.getPointCount(),
 			eCircle.getFillColor(),
@@ -453,7 +403,7 @@ void Scene_Play::spawnBullet(std::shared_ptr<Entity> e, const Vec2f& target) {
 		Vec2f(1.f, 1.f),
 		0.0f
 	);
-	b->add<CShape>(
+	b->add<CCircle>(
 		mBulletConfig.ShapeRadius,
 		mBulletConfig.Vertices,
 		sf::Color(mBulletConfig.FillRed, mBulletConfig.FillGreen, mBulletConfig.FillBlue),
